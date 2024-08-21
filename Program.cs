@@ -17,30 +17,39 @@ namespace MicrophoneOpenAI
         /// Sample rate, i.e., samples per second/frequency
         /// </summary>
         private static readonly int waveRate = 44100;
+        
         /// <summary>
         /// Bit depth per sample
         /// </summary>
         private static readonly int waveBits = 16;
+
         private static readonly int waveChannels = 1;
+        
         /// <summary>
         /// Above this noise level data from microphine is recorded to be sent for transcription.
         /// </summary>
         private static readonly int noiseLevel = 300;
+
         private static int countBelowNoiseLevel = 0;
+       
         /// <summary>
         /// The time in milliseconds a pause takes, i.e., until the elapsed time is detected as a pause.
         /// If a pause is detected, the recorded data from microphone is sent for transcription.
         /// </summary>
         private static readonly int pauseTimeMilliseconds = 500;
+        
         /// <summary>
         /// The buffer time in milliseconds
         /// </summary>
         private static readonly int bufferMilliseconds = 20;
+        
         /// <summary>
         /// The minimum audio length it needs for a successfull transcription response
         /// </summary>
         private static readonly int minimumAudioLengthMilliseconds = 100;
+
         private static readonly int minimumAudioLengthBuffer = waveRate * (waveBits / 8) / (1000 / minimumAudioLengthMilliseconds);
+        
         /// <summary>
         /// Contains a consecutive list of arrays of recorded microphone data
         /// </summary>
@@ -72,7 +81,7 @@ namespace MicrophoneOpenAI
 
         static void WaveIn_DataAvailable(object sender, WaveInEventArgs e)
         {
-            // copy buffer into an array of integers
+            // Copy buffer into an array of integers
             Int16[] values = new Int16[e.Buffer.Length / 2];
             Buffer.BlockCopy(e.Buffer, 0, values, 0, e.Buffer.Length);
 
@@ -120,10 +129,10 @@ namespace MicrophoneOpenAI
 
         public static byte[] ConvertToWav(byte[] bytes)
         {
-            //string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            //WaveFileWriter wavFileWriter = new WaveFileWriter(Path.Combine(docPath, DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss") + ".wav"), new WaveFormat(waveRate, waveBits, waveChannels));
-            //wavFileWriter.Write(bytes, 0, bytes.Length);
-            //wavFileWriter.Flush();
+            // string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            // WaveFileWriter wavFileWriter = new WaveFileWriter(Path.Combine(docPath, DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss") + ".wav"), new WaveFormat(waveRate, waveBits, waveChannels));
+            // wavFileWriter.Write(bytes, 0, bytes.Length);
+            // wavFileWriter.Flush();
 
             MemoryStream ms = new MemoryStream();
             using (WaveFileWriter writer = new WaveFileWriter(new IgnoreDisposeStream(ms), new WaveFormat(waveRate, waveBits, waveChannels)))
